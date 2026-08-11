@@ -91,6 +91,7 @@ leg2<-as_ggplot(leg2)
 leg2
 
 sam1<-sam1+theme(legend.position = "none")
+sam1 <- sam1 + coord_cartesian()
 sam1
 
 
@@ -179,11 +180,25 @@ beta_dist$Treatment<-data.growth$Treatment
 #color=c("dark blue","light blue" ,"dark green",  "light green", "red", "orange")
 color<-c("#1D2769","#66A0BD" , "#1E5235",  "#A4C269", "#943124", "#f4e093")
 
+star_p2 <- beta_dist %>%
+  filter(Ecosystem %in% c("Forest", "Meadow")) %>%
+  group_by(Ecosystem) %>%
+  summarise(
+    group = first(group),
+    distances = max(distances, na.rm = TRUE) * 1.08,
+    label = "*"
+  )
+
 p2<-ggplot(beta_dist, aes(x = group, y=distances, fill=group)) +
   scale_fill_manual(values=color)+
   geom_boxplot(alpha=0.8) + 
   geom_point(shape = 21,
              color = "black", size = 2)+
+  geom_text(data = star_p2,
+            aes(x = group, y = distances, label = label),
+            inherit.aes = FALSE,
+            position = position_nudge(x = 0.5),
+            size = 6) +
   facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
@@ -264,7 +279,7 @@ layout <- c(
 )
 plot(layout)
 
-all<- sam1 +  p3 +p2 +p4 + leg2+
+all<- free(sam1, side = "lb") +  p3 +p2 +p4 + leg2+
   plot_layout(design = layout)
 
 all
@@ -619,11 +634,14 @@ library(rstatix)
 beta_dist$Core<-individual$Core
 #load the data set
 d<-individual
-#choose the value and make sure you have all the treatment in the data set
-d$value<-(d$AMF)
+
 d$new<-paste(d$Ecosystem,d$Core)
 d$Treatment <- as.factor(d$Treatment)
 d$Ecosystem <- as.factor(d$Ecosystem)
+d$distance<-beta_dist$distances
+
+#choose the value and make sure you have all the treatment in the data set
+d$value<-(d$distance)
 #remove outliers if necessary
 #d<-d[-c(11),]
 
