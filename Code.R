@@ -98,10 +98,19 @@ sam1
 #run Permanovas
 #Treatment and Ecosystem as variables
 
-model1=adonis2(data_percentage_d[,c(1:24) ] ~ Treatment*Ecosystem,
-               method = "euclidean",  data=data_percentage_d, permutations=999)
-summary(model1)
+model1 <- adonis2(
+  data_percentage_d[, 1:24] ~ Treatment * Ecosystem,
+  data = data_percentage_d,
+  method = "euclidean",
+  permutations = 999,
+  by = "terms"
+)
+
 model1
+
+
+
+
 
 
 
@@ -188,6 +197,9 @@ star_p2 <- beta_dist %>%
     distances = max(distances, na.rm = TRUE) * 1.08,
     label = "*"
   )
+
+star_p2$distances[star_p2$Ecosystem == "Forest"] <-
+  star_p2$distances[star_p2$Ecosystem == "Forest"] - 0.2
 
 p2<-ggplot(beta_dist, aes(x = group, y=distances, fill=group)) +
   scale_fill_manual(values=color)+
@@ -401,9 +413,15 @@ ggsave(plot=all,"Fig. S2.png", width = 8, height = 8)
 #Permanova
 #Treatment and Ecosystem as variables
 
-model2=adonis2(data_percentage[,c(1:24) ] ~ Treatment*Ecosystem,
-               method = "euclidean",  data=data_percentage, permutations=999)
-summary(model2)
+
+model2 <- adonis2(
+  data_percentage[,c(1:24) ] ~ Treatment * Ecosystem,
+  data = data_percentage,
+  method = "euclidean",
+  permutations = 999,
+  by = "terms"
+)
+
 model2
 
 
