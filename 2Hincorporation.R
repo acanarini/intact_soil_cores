@@ -124,31 +124,42 @@ Fk_S<-bestFitValsF1_S[3]
 eq1_S <- function(x){Fmax_S  +(0.0156-Fmax_S  )*(exp(- Fk_S*x))}
 eq2_S <- function(x){Fmax_S  +(Fin_S-Fmax_S  )*(exp(- Fk_S*x))}
 
-legend_colors <- c("Intact core" = "#5189b8", "Sieved soil" = "red")
+legend_colors <- c("Intact core" = "#1E5235", "Sieved soil" = "#A4C269")
 
-forestgraph = ggplot()+
-  
-  geom_point(data = data_forest_IC, aes(x = time, y = values, fill="Intact core"), shape = 21, size = 2, stroke = 1)+
-  geom_point(data = data_forest_S, aes(x = time, y = values, fill = "Sieved soil"),  shape = 21, size = 2, stroke = 1)+
-  
-  stat_function(fun=eq1_IC, geom="line", colour ="#5189b8" , size = 0.5, linetype = 1)+
-  
-  stat_function(fun=eq2_IC, geom="line", colour = "#5189b8", size = 0.5, linetype = 2)+
-  stat_function(fun=eq1_S, geom="line",colour = "red", size = 0.5, linetype = 1)+
-  
-  stat_function(fun=eq2_S, geom="line",colour = "red", size = 0.5, linetype = 2)+
-  labs(fill = "") + 
-  scale_color_manual(values = legend_colors) +
-
-  theme(    
-    panel.background = element_rect(fill = "white", colour = "black",
-                                    size = 0.5, linetype = "solid"),
-    panel.grid.major = element_blank(), 
-    panel.grid.minor = element_blank()
-  )+
-  labs(title = "Forest") +ylab(bquote(' '^2*'H atom%'))+xlab('Time (hours)')+
-  ylim(0,15)
+forestgraph <- ggplot() +
+  geom_point(data = data_forest_IC, aes(x = time, y = values, fill = "Intact core"),
+             shape = 21, size = 3, stroke = 1) +
+  geom_point(data = data_forest_S, aes(x = time, y = values, fill = "Sieved soil"),
+             shape = 21, size = 3, stroke = 1) +
+  stat_function(fun = eq1_IC, geom = "line", colour = "#1E5235", size = 1, linetype = 1) +
+  stat_function(fun = eq2_IC, geom = "line", colour = "#1E5235", size = 1, linetype = 2) +
+  stat_function(fun = eq1_S,  geom = "line", colour = "#A4C269", size = 1, linetype = 1) +
+  stat_function(fun = eq2_S,  geom = "line", colour = "#A4C269", size = 1, linetype = 2) +
+  labs(fill = "") +
+  scale_fill_manual(values = legend_colors) +
+  theme(
+    panel.background = element_rect(fill = "white", colour = "black", size = 0.5),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom",
+    legend.box = "horizontal",
+    axis.title = element_text(size = 16),
+    axis.text  = element_text(size = 14),
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 14),
+    plot.title  = element_text(size = 18),
+    strip.text = element_text(size = 14)  # if you facet; otherwise harmless
+    # plot.title not set, so it stays at its default size
+  ) +
+  guides(fill = guide_legend(nrow = 1)) +
+  labs(title = "Forest") +
+  ylab(bquote(' '^2*'H atom%')) + xlab('Time (hours)') +
+  ylim(0, 15)
 forestgraph
+ggsave("H2incorp_forest_green.jpg", plot = last_plot(),
+       width = 8, height = 8, units = "in", scale = 0.7)
+
+
 
 
 
@@ -268,30 +279,42 @@ Mk_S<-bestFitValsM1_S[3]
 eq3_S <- function(x){Mmax_S  +(0.0156-Mmax_S  )*(exp(- Mk_S*x))}
 eq4_S <- function(x){Mmax_S  +(Min_S-Mmax_S  )*(exp(- Mk_S*x))}
 
+legend_colors <- c("Intact core" = "#943124", "Sieved soil" = "#f4e093")
 
-meadowgraph = ggplot()+
-  
-  geom_point(data = data_meadow_IC, aes(x = time, y = values, fill="Intact core"), shape = 21, size = 2, stroke = 1)+
-  geom_point(data = data_meadow_S, aes(x = time, y = values, fill = "Sieved soil"),  shape = 21, size = 2, stroke = 1)+
-  
-  stat_function(fun=eq3_IC, geom="line",colour = "#5189b8", size = 0.5, linetype = 1)+
-  
-  stat_function(fun=eq4_IC, geom="line",colour = "#5189b8", size = 0.5, linetype = 2)+
-  stat_function(fun=eq3_S, geom="line",colour = "red", size = 0.5, linetype = 1)+
-  
-  stat_function(fun=eq4_S, geom="line",colour = "red", size = 0.5, linetype = 2)+
-  labs(fill = "") + 
-  scale_color_manual(values = legend_colors) +
-
-  theme(    
-    panel.background = element_rect(fill = "white", colour = "black",
-                                    size = 0.5, linetype = "solid"),
-    panel.grid.major = element_blank(), 
-    panel.grid.minor = element_blank()
-  )+
-  labs(title = "Meadow") +ylab(bquote(' '^2*'H atom%'))+xlab('Time (hours)') +
-  ylim(0,12)
+meadowgraph <- ggplot() +
+  geom_point(data = data_meadow_IC, aes(x = time, y = values, fill = "Intact core"),
+             shape = 21, size = 2, stroke = 1) +
+  geom_point(data = data_meadow_S, aes(x = time, y = values, fill = "Sieved soil"),
+             shape = 21, size = 2, stroke = 1) +
+  stat_function(fun = eq3_IC, geom = "line", colour = "#943124", size = 1, linetype = 1) +
+  stat_function(fun = eq4_IC, geom = "line", colour = "#943124", size = 1, linetype = 2) +
+  stat_function(fun = eq3_S,  geom = "line", colour = "#f4e093", size = 1, linetype = 1) +
+  stat_function(fun = eq4_S,  geom = "line", colour = "#f4e093", size = 1, linetype = 2) +
+  labs(fill = "") +
+  scale_fill_manual(values = c("Intact core" = "#943124", "Sieved soil" = "#f4e093")) +
+  theme(
+    panel.background = element_rect(fill = "white", colour = "black", size = 0.5),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom",
+    legend.box = "horizontal",
+    axis.title = element_text(size = 16),
+    axis.text  = element_text(size = 14),
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 14),
+    plot.title  = element_text(size = 18),
+    strip.text = element_text(size = 14)  # if you facet; otherwise harmless
+    # plot.title not set, so it stays at its default size
+  ) +
+  guides(fill = guide_legend(nrow = 1)) +
+  labs(title = "Meadow") +
+  ylab(bquote(' '^2*'H atom%')) + xlab('Time (hours)') +
+  ylim(0, 15)
 meadowgraph
+ggsave("H2incorp_meadow_red.jpg", plot = last_plot(), 
+       width = 8, height = 8, units = "in", scale = 0.7)
+
+
 
 
 #select data sets
@@ -410,30 +433,43 @@ Ak_S<-bestFitValsA1_S[3]
 eq5_S <- function(x){Amax_S  +(0.0156-Amax_S  )*(exp(- Ak_S*x))}
 eq6_S <- function(x){Amax_S  +(Ain_S-Amax_S  )*(exp(- Ak_S*x))}
 
+legend_colors <- c("Intact core" = "#1D2769", "Sieved soil" = "#66A0BD")
 
 fieldgraph = ggplot()+
   
   geom_point(data = data_field_IC, aes(x = time, y = values, fill="Intact core"), shape = 21, size = 2, stroke = 1)+
   geom_point(data = data_field_S, aes(x = time, y = values, fill = "Sieved soil"),  shape = 21, size = 2, stroke = 1)+
   
-  stat_function(fun=eq5_IC, geom="line",colour = "#5189b8", size = 0.5, linetype = 1)+
+  stat_function(fun=eq5_IC, geom="line",colour = "#1D2769", size = 1, linetype = 1)+
   
-  stat_function(fun=eq6_IC, geom="line",colour = "#5189b8", size = 0.5, linetype = 2)+
-  stat_function(fun=eq5_S, geom="line",colour = "red", size = 0.5, linetype = 1)+
+  stat_function(fun=eq6_IC, geom="line",colour = "#1D2769", size = 1, linetype = 2)+
+  stat_function(fun=eq5_S, geom="line",colour = "#66A0BD", size = 1, linetype = 1)+
   
-  stat_function(fun=eq6_S, geom="line",colour = "red", size = 0.5, linetype = 2)+
+  stat_function(fun=eq6_S, geom="line",colour = "#66A0BD", size = 1, linetype = 2)+
   labs(fill = "") + 
-  scale_color_manual(values = legend_colors) +
+  scale_fill_manual(values = legend_colors) +
   
-  theme(    
-    panel.background = element_rect(fill = "white", colour = "black",
-                                    size = 0.5, linetype = "solid"),
-    panel.grid.major = element_blank(), 
-    panel.grid.minor = element_blank()
-  )+
-  labs(title = "Agricultural") +ylab(bquote(' '^2*'H atom%'))+xlab('Time (hours)') +
-  ylim(0,12)
+  theme(
+    panel.background = element_rect(fill = "white", colour = "black", size = 0.5),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom",
+    legend.box = "horizontal",
+    axis.title = element_text(size = 16),
+    axis.text  = element_text(size = 14),
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 14),
+    plot.title  = element_text(size = 18),
+    strip.text = element_text(size = 14)  # if you facet; otherwise harmless
+    # plot.title not set, so it stays at its default size
+  ) +
+  guides(fill = guide_legend(nrow = 1)) +
+  labs(title = "Cropland") +
+  ylab(bquote(' '^2*'H atom%')) + xlab('Time (hours)') +
+  ylim(0, 15)
 fieldgraph
+ggsave("H2incorp_cropland_blue.jpg", plot = last_plot(),
+       width = 8, height = 8, units = "in", scale = 0.7)
 
 
 #Plot all together for Fi S1
@@ -456,13 +492,13 @@ ggsave(file="Dexchangefig3.svg", plot=rest, width=10, height=3.8)
 ###Integral
 #get integral of the curve
 require(pracma)
-valueA_IC<-integrate(eq1, lower = 0, upper = 48)$value
+valueA_IC<-integrate(eq1_IC, lower = 0, upper = 48)$value
 valueA_S<-integrate(eq1_S, lower = 0, upper = 48)$value
 
-valueM_IC<-integrate(eq3, lower = 0, upper = 48)$value
+valueM_IC<-integrate(eq3_IC, lower = 0, upper = 48)$value
 valueM_S<-integrate(eq3_S, lower = 0, upper = 48)$value
 
-valueF_IC<-integrate(eq5, lower = 0, upper = 48)$value
+valueF_IC<-integrate(eq5_IC, lower = 0, upper = 48)$value
 valueF_S<-integrate(eq5_S, lower = 0, upper = 48)$value
 
 
@@ -475,7 +511,7 @@ valueF_IC
 valueF_S
 
 
-###NEED REAL INUCUB TIME, get one value per sample by changing the number 48 with the real time value
+###NEED REAL INUCUB TIME, get one value per sample
 #get the atm%
 totA_IC<-valueA_IC/48
 totA_S<-valueA_S/48
@@ -491,5 +527,5 @@ totF_IC
 totF_S
 
 
-ggsave(file="deuteriumfig3.8.svg", plot=rest, width=10, height=3.8)
+#ggsave(file="deuteriumfig3.8_HS.svg", plot=rest, width=10, height=3.8)
 
