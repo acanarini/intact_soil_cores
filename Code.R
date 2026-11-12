@@ -56,7 +56,7 @@ var1<-fviz_pca_var(res.pca,
              legend.title = "Group")+    # Indiviual fill color 
   theme_classic()+
   theme(plot.title = element_blank(),
-        panel.border = element_rect(colour = "black", fill=NA, size=1))+
+        panel.border = element_rect(colour = "black", fill=NA, linewidth = 1))+
   theme(legend.position = "none")+
   labs(tag = "b)")
 
@@ -77,7 +77,7 @@ sam1 <-fviz_pca_ind(res.pca,
                     palette = c("#1D2769","#66A0BD" , "#1E5235",  "#A4C269", "#943124", "#f4e093"))+      # Indiviual fill color 
   theme_classic()+
   theme(plot.title = element_blank(),
-        panel.border = element_rect(colour = "black", fill=NA, size=1))+ 
+        panel.border = element_rect(colour = "black", fill=NA, linewidth = 1))+ 
   theme(legend.position = "bottom")+
   labs(x = "PC1 (30.6%)",y="PC2 (24%)")+
   labs(tag = "a)")
@@ -112,7 +112,7 @@ model1
 library(vegan)
 library(permute)
 
-ecosystems <- c("Agricultural", "Forest", "Meadow")
+ecosystems <- c("Cropland", "Forest", "Meadow")
 
 results_by_ecosystem <- list()
 
@@ -143,7 +143,7 @@ for (eco in ecosystems) {
   print(model_eco)
 }
 
-results_by_ecosystem$Agricultural
+results_by_ecosystem$Cropland
 results_by_ecosystem$Forest
 results_by_ecosystem$Meadow
 
@@ -152,7 +152,7 @@ results_by_ecosystem$Meadow
 
 ######Calculate Bray curtis dissimilarity ################
 dis <-vegdist(data2, method="euclid")   
-groups <- factor(c(rep(1,5), rep(2,5), rep(3,5), rep(4,5), rep(5,5), rep(6,5)), labels = c("Agricultural","Agricultural - Sieved",
+groups <- factor(c(rep(1,5), rep(2,5), rep(3,5), rep(4,5), rep(5,5), rep(6,5)), labels = c("Cropland","Cropland - Sieved",
                                                                                                "Forest - IC","Forest - Sieved",       
                           
                                                                                                                                                               "Meadow - IC","Meadow - Sieved"))
@@ -246,7 +246,7 @@ p2<-ggplot(beta_dist, aes(x = group, y=distances, fill=group)) +
             inherit.aes = FALSE,
             position = position_nudge(x = 0.5),
             size = 6) +
-  facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
+  facet_grid(. ~ fct_relevel(Ecosystem,'Cropland','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
     axis.title.x = element_blank(),
@@ -276,7 +276,7 @@ p3<-ggplot(msgrowth, aes(x = Combined, y=FUNGI, fill=Combined)) +
   geom_boxplot(alpha=0.8) + 
   geom_point(shape = 21,
              color = "black", size = 2)+
-  facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
+  facet_grid(. ~ fct_relevel(Ecosystem,'Cropland','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
     axis.title.x = element_blank(),
@@ -297,7 +297,7 @@ p4<-ggplot(msgrowth, aes(x = Combined, y=bacteria, fill=Combined)) +
   geom_boxplot(alpha=0.8) + 
   geom_point(shape = 21,
              color = "black", size = 2)+
-  facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
+  facet_grid(. ~ fct_relevel(Ecosystem,'Cropland','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
     axis.title.x = element_blank(),
@@ -381,7 +381,7 @@ var2<-fviz_pca_var(res.pca2,
                    legend.title = "Group")+    # Indiviual fill color 
   theme_classic()+
   theme(plot.title = element_blank(),
-        panel.border = element_rect(colour = "black", fill=NA, size=1))+
+        panel.border = element_rect(colour = "black", fill=NA, linewidth = 1))+
 labs(tag = "c)")
 
 #extract legend
@@ -409,7 +409,7 @@ sam2 <-fviz_pca_ind(res.pca2,
                     palette = c("#1D2769","#66A0BD" , "#1E5235",  "#A4C269", "#943124", "#f4e093"))+      # Indiviual fill color 
   theme_classic()+
   theme(plot.title = element_blank(),
-        panel.border = element_rect(colour = "black", fill=NA, size=1))+ 
+        panel.border = element_rect(colour = "black", fill=NA, linewidth = 1))+ 
   theme(legend.position = "right")+
   labs(x = "PC1 (72.3%)",y="PC2 (17.6%)")+
   labs(tag = "a)")
@@ -462,7 +462,7 @@ model2
 library(vegan)
 library(permute)
 
-ecosystems <- c("Agricultural", "Forest", "Meadow")
+ecosystems <- c("Cropland", "Forest", "Meadow")
 
 results_by_ecosystem <- list()
 
@@ -493,14 +493,14 @@ for (eco in ecosystems) {
   print(model_eco)
 }
 
-results_by_ecosystem$Agricultural
+results_by_ecosystem$Cropland
 results_by_ecosystem$Forest
 results_by_ecosystem$Meadow
 
 
 ######Total growth, CUE and respiration - Supp ################
 file <- file.choose(new = FALSE)#Resp_Grwoth_cue
-resp_cue <- read.csv(file,header=T,dec=".",sep=";", row.names=1)
+resp_cue <- read.csv(file,header=T,dec=".",sep=",", row.names=1)
 
 
 f1<-ggplot(resp_cue, aes(x = Combined, y=resp, fill=Combined)) +
@@ -508,7 +508,7 @@ f1<-ggplot(resp_cue, aes(x = Combined, y=resp, fill=Combined)) +
   geom_boxplot(alpha=0.8) + 
   geom_point(shape = 21,
              color = "black", size = 2)+
-  facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
+  facet_grid(. ~ fct_relevel(Ecosystem,'Cropland','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
     axis.title.x = element_blank(),
@@ -531,7 +531,7 @@ f2<-ggplot(resp_cue, aes(x = Combined, y=msgrowth, fill=Combined)) +
   geom_boxplot(alpha=0.8) + 
   geom_point(shape = 21,
              color = "black", size = 2)+
-  facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
+  facet_grid(. ~ fct_relevel(Ecosystem,'Cropland','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
     axis.title.x = element_blank(),
@@ -552,7 +552,7 @@ f3<-ggplot(resp_cue, aes(x = Combined, y=cue, fill=Combined)) +
   geom_boxplot(alpha=0.8) + 
   geom_point(shape = 21,
              color = "black", size = 2)+
-  facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
+  facet_grid(. ~ fct_relevel(Ecosystem,'Cropland','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
     axis.title.x = element_blank(),
@@ -606,7 +606,7 @@ i1<-ggplot(individual, aes(x = Combined, y=GRAM.POS, fill=Combined)) +
   geom_boxplot(alpha=0.8) + 
   geom_point(shape = 21,
              color = "black", size = 2)+
-  facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
+  facet_grid(. ~ fct_relevel(Ecosystem,'Cropland','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
     axis.title.x = element_blank(),
@@ -627,7 +627,7 @@ i2<-ggplot(individual, aes(x = Combined, y=GRAM.NEG, fill=Combined)) +
   geom_boxplot(alpha=0.8) + 
   geom_point(shape = 21,
              color = "black", size = 2)+
-  facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
+  facet_grid(. ~ fct_relevel(Ecosystem,'Cropland','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
     axis.title.x = element_blank(),
@@ -648,7 +648,7 @@ i3<-ggplot(individual, aes(x = Combined, y=ACTINO, fill=Combined)) +
   geom_boxplot(alpha=0.8) + 
   geom_point(shape = 21,
              color = "black", size = 2)+
-  facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
+  facet_grid(. ~ fct_relevel(Ecosystem,'Cropland','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
     axis.title.x = element_blank(),
@@ -669,7 +669,7 @@ i4<-ggplot(individual, aes(x = Combined, y=AMF, fill=Combined)) +
   geom_boxplot(alpha=0.8) + 
   geom_point(shape = 21,
              color = "black", size = 2)+
-  facet_grid(. ~ fct_relevel(Ecosystem,'Agricultural','Forest','Meadow'), scales = "free", space = "free")+
+  facet_grid(. ~ fct_relevel(Ecosystem,'Cropland','Forest','Meadow'), scales = "free", space = "free")+
   theme_bw()+
   theme(
     axis.title.x = element_blank(),
