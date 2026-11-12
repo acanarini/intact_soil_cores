@@ -150,7 +150,7 @@ results_by_ecosystem$Meadow
 
 
 
-######Calculate Bray curtis dissimilarity ################
+######Calculate Euclidean dissimilarity ################
 dis <-vegdist(data2, method="euclid")   
 groups <- factor(c(rep(1,5), rep(2,5), rep(3,5), rep(4,5), rep(5,5), rep(6,5)), labels = c("Cropland","Cropland - Sieved",
                                                                                                "Forest - IC","Forest - Sieved",       
@@ -718,7 +718,7 @@ ggsave(plot=all,"Fig. S4.png", width = 9, height = 8)
 ######Statistic ################
 library(rstatix)
 #datasets:
-#Bray curtis =beta_dist
+#Euclidean distance to group centroids =beta_dist
 #Fungi and bacteria = msgrowth
 #Respiration etc = resp_cue
 #individual groups = individual
